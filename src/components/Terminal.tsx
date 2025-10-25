@@ -6,7 +6,7 @@ import { FileViewer } from './FileViewer';
 
 interface HistoryEntry {
   command: string;
-  output: string | JSX.Element;
+  output: string | React.ReactNode;
   error?: boolean;
 }
 
@@ -41,20 +41,20 @@ export function Terminal() {
     const command = parts[0];
     const args = parts.slice(1);
 
-    let output: string | JSX.Element = '';
+    let output: string | React.ReactNode = '';
     let error = false;
 
     switch (command) {
       case 'help':
         output = (
           <div className="space-y-2">
-            <div className="text-cyan-400 font-bold mb-3">Commandes disponibles:</div>
-            <div><span className="text-yellow-400">ls</span> ou <span className="text-yellow-400">ls -la</span> - Liste les fichiers du répertoire actuel</div>
-            <div><span className="text-yellow-400">cd [dossier]</span> - Change de répertoire</div>
-            <div><span className="text-yellow-400">cat [fichier]</span> - Affiche le contenu d'un fichier</div>
-            <div><span className="text-yellow-400">pwd</span> - Affiche le chemin actuel</div>
-            <div><span className="text-yellow-400">clear</span> - Efface le terminal</div>
-            <div><span className="text-yellow-400">help</span> - Affiche cette aide</div>
+            <div className="text-red-400 font-bold mb-3">Commandes disponibles:</div>
+            <div><span className="text-white">ls</span> ou <span className="text-white">ls -la</span> - Liste les fichiers du répertoire actuel</div>
+            <div><span className="text-white">cd [dossier]</span> - Change de répertoire</div>
+            <div><span className="text-white">cat [fichier]</span> - Affiche le contenu d'un fichier</div>
+            <div><span className="text-white">pwd</span> - Affiche le chemin actuel</div>
+            <div><span className="text-white">clear</span> - Efface le terminal</div>
+            <div><span className="text-white">help</span> - Affiche cette aide</div>
           </div>
         );
         break;
@@ -126,40 +126,40 @@ export function Terminal() {
   }
 
   return (
-    <div className="bg-gray-900 border border-green-600 rounded-lg shadow-2xl shadow-green-900/50 w-full flex flex-col font-mono">
-      <div className="bg-green-900/20 border-b border-green-600 px-4 py-3 flex items-center justify-between">
+    <div className="bg-black border border-red-600 rounded-lg shadow-2xl shadow-red-900/50 w-full flex flex-col font-mono">
+      <div className="bg-red-900/20 border-b border-red-600 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-red-500"></div>
-          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+          <div className="w-3 h-3 rounded-full bg-white"></div>
+          <div className="w-3 h-3 rounded-full bg-red-600"></div>
         </div>
-        <div className="text-green-400 text-sm">Portfolio Terminal</div>
+        <div className="text-red-400 text-sm">Portfolio Terminal</div>
       </div>
 
-      <div className="bg-yellow-900/20 border-b border-yellow-600 px-4 py-2 text-yellow-300 text-sm flex items-center gap-2">
-        <span className="text-yellow-500">💡</span>
-        Si vous n'êtes pas familier avec un shell, tapez la commande <span className="font-bold text-yellow-400">help</span>
+      <div className="bg-red-900/20 border-b border-red-600 px-4 py-2 text-white text-sm flex items-center gap-2">
+        <span className="text-red-500">💡</span>
+        Si vous n'êtes pas familier avec un shell, tapez la commande <span className="font-bold text-red-400">help</span>
       </div>
 
       <div
         ref={terminalRef}
-        className="p-4 overflow-y-auto cursor-text"
+        className="p-4 overflow-y-auto cursor-text select-text"
         onClick={handleTerminalClick}
-        style={{ height: '500px' }}
+        style={{ height: '500px', userSelect: 'text' }}
       >
         {history.map((entry, idx) => (
-          <div key={idx} className="mb-2">
+          <div key={idx} className="mb-2 select-text">
             {entry.command && (
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-cyan-400">user@portfolio</span>
+              <div className="flex items-center gap-2 flex-wrap select-text">
+                <span className="text-red-400">user@portfolio</span>
                 <span className="text-white">:</span>
-                <span className="text-blue-400">{currentPath}</span>
+                <span className="text-red-400">{currentPath}</span>
                 <span className="text-white">$</span>
-                <span className="text-green-400">{entry.command}</span>
+                <span className="text-white">{entry.command}</span>
               </div>
             )}
             {entry.output && (
-              <div className={`mt-1 ml-2 ${entry.error ? 'text-red-400' : 'text-gray-300'}`}>
+              <div className={`mt-1 ml-2 select-text ${entry.error ? 'text-red-500' : 'text-gray-300'}`}>
                 {entry.output}
               </div>
             )}
@@ -167,9 +167,9 @@ export function Terminal() {
         ))}
 
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-cyan-400">user@portfolio</span>
+          <span className="text-red-400">user@portfolio</span>
           <span className="text-white">:</span>
-          <span className="text-blue-400">{currentPath}</span>
+          <span className="text-red-400">{currentPath}</span>
           <span className="text-white">$</span>
           <input
             ref={inputRef}
@@ -177,7 +177,7 @@ export function Terminal() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="flex-1 min-w-[200px] bg-transparent outline-none text-green-400 caret-green-400"
+            className="flex-1 min-w-[200px] bg-transparent outline-none text-white caret-red-500 select-text"
             autoFocus
           />
         </div>
